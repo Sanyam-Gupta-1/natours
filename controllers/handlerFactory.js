@@ -18,7 +18,7 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // findOneAndX and findByIdAndX functions support limited validation- means only runs limited validator
     // For ex - in case of findByIdAndUpdate only chnaged property validators run but in case of .save() and .create() all validators runs.
     const document = await Model.findByIdAndUpdate(req.params.id, req.body, {

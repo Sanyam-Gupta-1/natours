@@ -20,7 +20,6 @@ const sendErrorDev = (res, req, err) => {
 
 const sendErrorProd = (res, req, err) => {
   if (req.originalUrl.startsWith('/api')) {
-    console.error('ERROR 💥💥', err);
     // 1) API
     // 1A) Operational trusted error : send message to the client
     if (err.operational) {
@@ -30,6 +29,7 @@ const sendErrorProd = (res, req, err) => {
       });
     }
     // 1B) Programming or other unknown error : don't leak error details
+    console.error('ERROR 💥💥', err);
     res.status(500).send({
       status: 'error',
       message: 'Something went wrong!!',
