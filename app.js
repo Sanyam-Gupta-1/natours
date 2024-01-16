@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const path = require('path');
 const hpp = require('hpp');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const tourRouter = require('./routes/tourRoutes');
@@ -23,10 +24,20 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
+// 1) Global Middleware
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin *
+// api.natours.com, front-end natours.com
+// app.use(cors({
+//   origin: 'https://www.natours.com'
+// }))
+
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
+
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
-
-// 1) Global Middleware
 
 // Set security HTTP headers
 const scriptSrcUrls = [
@@ -117,6 +128,7 @@ app.use((req, res, next) => {
 });
 
 // 2) ROUTES
+// app.use('/api/v1/tours', cors(), tourRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
